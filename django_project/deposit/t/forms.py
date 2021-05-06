@@ -9,4 +9,5 @@ class DepositForm(forms.ModelForm):
             'deposit',
             'term',
             'rate',
+            'interest',
         ]

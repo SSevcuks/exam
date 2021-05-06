@@ -9,10 +9,10 @@
         {% for deposit in object_list %}
             <li>
                 <a href="{% url 'deposit-detail' pk=deposit.pk %}">
-                    ID:{{ deposit.id }}<br>
                     Deposit: {{ deposit.deposit }}<br>
                     Term: {{ deposit.term }}<br>
                     Rate: {{ deposit.rate }}<br>
+                    Interest: {{ deposit.interest }}
                 </a>
             </li>
         {% endfor %}

@@ -1,36 +1,53 @@
 from django.shortcuts import render, HttpResponse
 from django.views.generic import View, ListView, FormView, DetailView
 from deposit.models import Deposit
-from deposit.forms import DepositForm
 
 
 class DepositListView(ListView):
     model = Deposit
     template_name = 'deposit_list.html'
 
+def add_deposit(request):
+    if request.method == 'POST':
 
-class AddDepositView(FormView):
-    form_class = DepositForm
-    template_name = 'add_deposit.html'
+        deposit = request.POST['deposit']
+        term = request.POST['term']
+        rate = request.POST['rate']
 
-
-    def form_valid(self, form):
-        form.save()
-        deposit = form.cleaned_data['deposit']
-        term = form.cleaned_data['term']
-        rate = form.cleaned_data['rate']
+        def interest(deposit, term, rate):
 
 
-        return HttpResponse(f"<p>Deposit: <strong>{deposit}"
-                            f"</strong><br>Term: {term}"
-                            f"<br>Rate: {rate}</p>")
+            interest = 0
 
+            for i in range(term):
+                interest = interest + (deposit + interest) * rate
 
+            return interest
+
+        deposit = Deposit(deposit=deposit,
+                          term=term,
+                          rate=rate,
+                          interest=interest(int(deposit), int(term), float(rate)),
+                          )
+
+        deposit.save()
+
+        context = {
+            'deposit': deposit,
+        }
+
+        return render(
+            template_name='new_deposit.html',
+            request=request,
+            context=context,
+
+        )
+
+    return render(
+        template_name='form.html',
+        request=request
+    )
 
 class GetDepositView(DetailView):
     model = Deposit
     template_name = 'deposit.html'
-
-
-
-
