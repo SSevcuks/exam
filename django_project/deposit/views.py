@@ -1,5 +1,5 @@
-from django.shortcuts import render, HttpResponse
-from django.views.generic import View, ListView, FormView, DetailView
+from django.shortcuts import render, HttpResponsePermanentRedirect
+from django.views.generic import View, ListView, DetailView
 from deposit.models import Deposit
 
 
@@ -35,13 +35,8 @@ def add_deposit(request):
         context = {
             'deposit': deposit,
         }
+        return HttpResponsePermanentRedirect('/')
 
-        return render(
-            template_name='new_deposit.html',
-            request=request,
-            context=context,
-
-        )
 
     return render(
         template_name='form.html',
