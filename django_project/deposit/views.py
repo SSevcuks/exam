@@ -16,7 +16,6 @@ def add_deposit(request):
 
         def interest(deposit, term, rate):
 
-
             interest = 0
 
             for i in range(term):
@@ -32,9 +31,6 @@ def add_deposit(request):
 
         deposit.save()
 
-        context = {
-            'deposit': deposit,
-        }
         return HttpResponsePermanentRedirect('/')
 
 
